@@ -18,7 +18,7 @@ public class CollisionDetector {
 
     public CollisionType checkCollision() {
         Keys facing = gamePanel.snake.currentDirection;
-        if (checkHitApple(facing)) return CollisionType.apple;
+        if (checkHitApple()) return CollisionType.apple;
         if (checkHitWall(facing)) return CollisionType.wall;
         return CollisionType.none;
     };
@@ -26,19 +26,19 @@ public class CollisionDetector {
     private boolean checkHitWall(Keys facing) {
         switch (facing) {
             case up:
-                if ((gamePanel.snake.yPos + (gamePanel.snake.height / 2)) < (gamePanel.snake.height / 2))
+                if ((gamePanel.snake.head.yPos + (gamePanel.snake.height / 2)) < (gamePanel.snake.height / 2))
                     return true;
                 break;
             case down:
-                if (gamePanel.snake.yPos > (gamePanel.screenHeight - gamePanel.snake.height))
+                if (gamePanel.snake.head.yPos > (gamePanel.screenHeight - gamePanel.snake.height))
                     return true;
                 break;
             case left:
-                if (gamePanel.snake.xPos < 0)
+                if (gamePanel.snake.head.xPos < 0)
                     return true;
                 break;
             case right:
-                if (gamePanel.snake.xPos > (gamePanel.screenWidth - gamePanel.snake.width))
+                if (gamePanel.snake.head.xPos > (gamePanel.screenWidth - gamePanel.snake.width))
                     return true;
                 break;
             default:
@@ -47,16 +47,16 @@ public class CollisionDetector {
         return false;
     };
 
-    private boolean checkUpDown() {
-        return gamePanel.apple.xPos > gamePanel.snake.xPos && gamePanel.apple.xPos < (gamePanel.snake.xPos + gamePanel.snake.width);
+    private boolean checkHitApple() {
+        int appleLeft = gamePanel.apple.xPos - (gamePanel.apple.width / 2);
+        int appleRight = gamePanel.apple.xPos + (gamePanel.apple.width / 2);
+        int appleTop = gamePanel.apple.yPos - (gamePanel.apple.height / 2);
+        int appleBottom = gamePanel.apple.yPos + (gamePanel.apple.height / 2);
+        return (
+            gamePanel.snake.head.xPos >= appleLeft &&
+            gamePanel.snake.head.xPos <= appleRight &&
+            gamePanel.snake.head.yPos >= appleTop &&
+            gamePanel.snake.head.yPos <= appleBottom
+        );
     };
-
-    private boolean checkLeftRight() {
-        return gamePanel.apple.yPos > gamePanel.snake.yPos && gamePanel.apple.yPos < (gamePanel.snake.yPos + gamePanel.snake.height);
-    };
-
-    private boolean checkHitApple(Keys facing) {
-        return (checkUpDown() && checkLeftRight());
-    };
-
 }

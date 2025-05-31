@@ -14,12 +14,12 @@ import main.CollisionDetector.CollisionType;
 public class GamePanel extends JPanel implements Runnable {
 
     // SCREEN SETTINGS
-    final int originalTileSize = 16;  // 16x16 px
+    final int originalTileSize = 20;  // 16x16 px
     final int scale = 3;  // scale up x3
 
     public final int tileSize = originalTileSize * scale;  // 48x48 tile size
-    public final int maxScreenCol = 16;
-    public final int maxScreenRow = 12;
+    public final int maxScreenCol = 20;
+    public final int maxScreenRow = 15;
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
 
@@ -30,7 +30,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int worldHeight = tileSize * maxScreenRow;
     public final int middleX = screenWidth / 2 - (tileSize / 2);
 
-    int FPS = 60;
+    int FPS = 10;
 
     public Snake snake = new Snake(this);
     public Apple apple = new Apple(this);
@@ -78,9 +78,6 @@ public class GamePanel extends JPanel implements Runnable {
 
             if (delta >= 1) {
                 update();
-                System.out.println(snake.xPos);
-                System.out.println(snake.yPos);
-                System.out.println();
                 repaint();
                 delta--;
                 drawCount++;
@@ -92,8 +89,6 @@ public class GamePanel extends JPanel implements Runnable {
                 timer = 0;
             }
         };
-
-
     }
 
     public void update() {

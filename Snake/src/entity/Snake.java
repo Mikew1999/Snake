@@ -2,6 +2,7 @@ package entity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.LinkedList;
 
 import main.GamePanel;
 import main.KeyHandler.Keys;
@@ -9,14 +10,16 @@ import main.KeyHandler.Keys;
 public class Snake extends Entity implements IHandleKeys {
     public int width = 10;
     public int height = 10;
-    public int speed = 2;
+    public int speed = 10;
+
+    public Position head;
+    public LinkedList<Position> tail;
 
     public Keys currentDirection = Keys.down;
 
     public Snake(GamePanel gamePanel) {
-        this.gamePanel = gamePanel;
-        xPos = gamePanel.middleX;
-        yPos = 10;
+        this.head = new Position(gamePanel.middleX, 10);
+        // this.tail
     }
 
     public void handlePressed(Keys key) {
@@ -36,16 +39,16 @@ public class Snake extends Entity implements IHandleKeys {
     public void update() {
         switch (currentDirection) {
             case right:
-                xPos += speed;
+                head.xPos += speed;
                 break;
             case left:
-                xPos -= speed;
+                head.xPos -= speed;
                 break;
             case up:
-                yPos -= speed;
+                head.yPos -= speed;
                 break;
             case down:
-                yPos += speed;
+                head.yPos += speed;
                 break;
             default:
                 break;
@@ -54,6 +57,6 @@ public class Snake extends Entity implements IHandleKeys {
 
     public void draw(Graphics2D g2) {
         g2.setColor(Color.black);
-        g2.drawRect(xPos, yPos, width, height);
+        g2.drawRect(head.xPos, head.yPos, width, height);
     }
 }
