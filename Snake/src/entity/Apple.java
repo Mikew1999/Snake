@@ -25,8 +25,6 @@ public class Apple extends Entity {
     public void setPosition() {
         this.xPos = getPosWithinRange(20, this.gamePanel.screenWidth - 20);
         this.yPos = getPosWithinRange(20, this.gamePanel.screenHeight - 20);
-        System.out.println("xPos: " + xPos);
-        System.out.println("yPos: " + yPos);
     };
 
     public void draw(Graphics2D g2) {

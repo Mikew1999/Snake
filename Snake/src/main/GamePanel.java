@@ -32,16 +32,17 @@ public class GamePanel extends JPanel implements Runnable {
 
     int FPS = 10;
 
-    public Snake snake = new Snake(this);
-    public Apple apple = new Apple(this);
-    public boolean gameOver = false;
+    public boolean gamePaused = false;
+    public Snake snake;
+    public Apple apple;
+    public boolean gameOver;
     public KeyHandler keyHandler = new KeyHandler(snake);
     public CollisionDetector collisionChecker = new CollisionDetector(this);
     private Thread gameThread;
     private ScoreHandler scoreHandler;
     
     public GamePanel() {
-
+        setupGame();
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.CYAN);
         this.setDoubleBuffered(true);  // better rendering performance
@@ -51,6 +52,12 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame() {
+        System.out.println("\nStarting game");
+        snake = new Snake(this);
+        apple = new Apple(this);
+        gameOver = false;
+        keyHandler = new KeyHandler(snake);
+        collisionChecker = new CollisionDetector(this);
     }
 
     public void startGameThread() {
@@ -66,7 +73,6 @@ public class GamePanel extends JPanel implements Runnable {
         long lastTime = System.nanoTime();
         long currentTime;
         long timer = 0;
-        int drawCount = 0;
 
         while (!gameOver) {
 
@@ -80,15 +86,14 @@ public class GamePanel extends JPanel implements Runnable {
                 update();
                 repaint();
                 delta--;
-                drawCount++;
             }
 
             if (timer >= 1000000000) {
-                System.out.println("FPS: " + drawCount);
-                drawCount = 0;
                 timer = 0;
             }
         };
+
+
     }
 
     public void update() {
@@ -96,6 +101,7 @@ public class GamePanel extends JPanel implements Runnable {
         CollisionType collisionType = collisionChecker.checkCollision();
         if (collisionType == CollisionType.apple) {
             apple.setPosition();
+            snake.addTail = true;
             scoreHandler.incrementScore();
         } else if (collisionType !=  CollisionType.none) {
             gameOver = true;
@@ -104,7 +110,11 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g;  // typecast graphics to 2d
+        Graphics2D g2 = (Graphics2D)g;
+        if (gameOver) {
+            g2.drawString("GAME OVER!! \n you scored: " + scoreHandler.getScore(), (screenWidth / 2) - 20, (screenHeight / 2) - 20);
+            return;
+        }
         apple.draw(g2);
         snake.draw(g2);
         g2.setColor(Color.BLACK);

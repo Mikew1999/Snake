@@ -31,10 +31,6 @@ public class KeyHandler implements KeyListener {
     };
 
     @Override
-    public void keyTyped(KeyEvent e) {
-    }
-
-    @Override
     public void keyPressed(KeyEvent e) {
         String keyText = KeyEvent.getKeyText(e.getKeyCode());
         if (!keyMap.containsKey(keyText)) return;
@@ -42,9 +38,8 @@ public class KeyHandler implements KeyListener {
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
-        String keyText = KeyEvent.getKeyText(e.getKeyCode());
-        if (!keyMap.containsKey(keyText)) return;
-        handler.handleUnpressed(keyMap.get(keyText));
-    }
+    public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
 }
